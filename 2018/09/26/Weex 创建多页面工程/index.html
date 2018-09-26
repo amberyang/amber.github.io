@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="amber,weex,webpack," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta name="keywords" content="amber,weex,webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Weex 创建多页面工程">
+<meta property="og:url" content="http://github.com/AmberBlog/blog.git/2018/09/26/Weex 创建多页面工程/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://github.com/AmberBlog/blog.git/2018/09/26/Weex%20创建多页面工程/media/15378481399364/15378652688141.jpg">
+<meta property="og:updated_time" content="2018-09-26T08:31:29.969Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Weex 创建多页面工程">
+<meta name="twitter:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta name="twitter:image" content="http://github.com/AmberBlog/blog.git/2018/09/26/Weex%20创建多页面工程/media/15378481399364/15378652688141.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://github.com/AmberBlog/blog.git/2018/09/26/Weex 创建多页面工程/"/>
+
+
+
+
+
+  <title>Weex 创建多页面工程 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://github.com/AmberBlog/blog.git/2018/09/26/Weex 创建多页面工程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Weex 创建多页面工程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-26T16:30:20+08:00">
+                2018-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Weex-创建多页面工程"><a href="#Weex-创建多页面工程" class="headerlink" title="Weex 创建多页面工程"></a>Weex 创建多页面工程</h1><p>初学 Weex ，遇到很多问题，其中就有多页面的问题。</p>
+<p>最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。</p>
+<p>大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。</p>
+<p>在显示的地方调用 <router-view> 进行显示，通过 router-link 进行页面的切换。</router-view></p>
+<p>但是这个不是我想要的效果，我更多的想要的是两个独立的页面之间进行切换。</p>
+<h2 id="第一步：提供二个页面入口"><a href="#第一步：提供二个页面入口" class="headerlink" title="第一步：提供二个页面入口"></a>第一步：提供二个页面入口</h2><p>weex create 创建一个新工程 pagesdemo，默认创建的都是单页面工程，在工程的 src 目录下包含 index.vue 和 entry.js。</p>
+<p>创建一个新的入口，同样需要提供这两个问题。在同级目录下新增一个 detail.vue 和 detail.js。</p>
+<p>detail.js 需要修改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const router = require(&apos;./router&apos;)</span><br><span class="line">const detail = require(&apos;@/detail.vue&apos;)</span><br><span class="line"></span><br><span class="line">new Vue(Vue.util.extend(&#123;el: &apos;#root&apos;, router&#125;, detail))</span><br></pre></td></tr></table></figure>
+<h2 id="第二步：修改-webpack"><a href="#第二步：修改-webpack" class="headerlink" title="第二步：修改 webpack"></a>第二步：修改 webpack</h2><p>新增文件后，npm start 并不会编译新增的文件。如果想要文件被编译，还需要修改 webpack 文件。</p>
+<p>工程目录下的 webpack.config.js 内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// You can see all the config in `./configs`.</span><br><span class="line">const  buildPlugins = require(&apos;./configs/plugin&apos;);</span><br><span class="line">let webpackConfig;</span><br><span class="line">module.exports = env =&gt; &#123;</span><br><span class="line">  switch (env.NODE_ENV) &#123;</span><br><span class="line">    case &apos;prod&apos;:</span><br><span class="line">    case &apos;production&apos;:</span><br><span class="line">      webpackConfig = require(&apos;./configs/webpack.prod.conf&apos;);</span><br><span class="line">      break;</span><br><span class="line">    case &apos;test&apos;:</span><br><span class="line">    case &apos;testing&apos;:</span><br><span class="line">      webpackConfig = require(&apos;./configs/webpack.test.conf&apos;);</span><br><span class="line">      break;</span><br><span class="line">    case &apos;plugin&apos;:</span><br><span class="line">      buildPlugins();</span><br><span class="line">    case &apos;common&apos;:</span><br><span class="line">      webpackConfig = require(&apos;./configs/webpack.common.conf&apos;);</span><br><span class="line">      break;</span><br><span class="line">    case &apos;release&apos;:</span><br><span class="line">      webpackConfig = require(&apos;./configs/webpack.release.conf&apos;);</span><br><span class="line">      break;</span><br><span class="line">    case &apos;dev&apos;:</span><br><span class="line">    case &apos;development&apos;:</span><br><span class="line">    default:</span><br><span class="line">      webpackConfig = require(&apos;./configs/webpack.dev.conf&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">  return webpackConfig;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，dev 下使用的是 configs 目录下的 webpack.dev.conf</p>
+<h3 id="使用-npm-start-查看浏览器运行效果"><a href="#使用-npm-start-查看浏览器运行效果" class="headerlink" title="使用 npm start 查看浏览器运行效果"></a>使用 npm start 查看浏览器运行效果</h3><p>运行 npm start 后，通过浏览器可以看到显示的是 html 文件。web 编译后的文件存放在工程目录下的 web 文件下，打开文件夹可以看到有 index.html 文件，所以接下来我们需要查一下如何生成 html 入口文件。</p>
+<p>查看 index.html 的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">  &lt;title&gt;Index&lt;/title&gt;</span><br><span class="line">  &lt;meta name=&quot;weex-viewport&quot; content=&quot;750&quot;&gt;</span><br><span class="line">  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, user-scalable=no&quot;&gt;</span><br><span class="line">  &lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;</span><br><span class="line">  &lt;meta name=&quot;apple-touch-fullscreen&quot; content=&quot;yes&quot;&gt;&lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black&quot;&gt;</span><br><span class="line">  &lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no, email=no&quot;&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    html, body, #weex &#123;</span><br><span class="line">      width: 100%;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">    html, body &#123;</span><br><span class="line">      -ms-overflow-style: scrollbar;</span><br><span class="line">      -webkit-tap-highlight-color: transparent;</span><br><span class="line">      padding: 0;</span><br><span class="line">      margin: 0;</span><br><span class="line">      width: 100%;</span><br><span class="line">      height: 100%;</span><br><span class="line">      overflow-x: hidden;</span><br><span class="line">      -webkit-overflow-scrolling: touch;</span><br><span class="line">    &#125;</span><br><span class="line">    body::before &#123;</span><br><span class="line">      content: &quot;1&quot;;</span><br><span class="line">      height: 1px;</span><br><span class="line">      overflow: hidden;</span><br><span class="line">      color: transparent;</span><br><span class="line">      display: block;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;%= htmlWebpackPlugin.options.devScripts %&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>从源码中可以看到，index.html 是通过 &lt;%= htmlWebpackPlugin.options.devScripts %&gt; 获得需要显示的内容，那 htmlWebpackPlugin.options.devScripts 是什么东西呢？</p>
+<p>带着疑问，我们回到 webpack.dev.conf 文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">module.exports = new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">  portfinder.basePort = process.env.PORT || config.dev.port</span><br><span class="line">  portfinder.getPort((err, port) =&gt; &#123;</span><br><span class="line">    if (err) &#123;</span><br><span class="line">      reject(err)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      // publish the new Port, necessary for e2e tests</span><br><span class="line">      process.env.PORT = port</span><br><span class="line">      // add port to devServer config</span><br><span class="line">      devWebpackConfig.devServer.port = port</span><br><span class="line">      devWebpackConfig.devServer.public = `$&#123;ip&#125;:$&#123;port&#125;`</span><br><span class="line">      // Add FriendlyErrorsPlugin</span><br><span class="line">      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin(&#123;</span><br><span class="line">        compilationSuccessInfo: &#123;</span><br><span class="line">          messages: [</span><br><span class="line">            `Your application is running here: $&#123;chalk.yellow(`http://$&#123;devWebpackConfig.devServer.host&#125;:$&#123;port&#125;`)&#125;.`</span><br><span class="line">          ],</span><br><span class="line">        &#125;,</span><br><span class="line">        onErrors: config.dev.notifyOnErrors</span><br><span class="line">        ? utils.createNotifierCallback()</span><br><span class="line">        : undefined</span><br><span class="line">      &#125;))</span><br><span class="line"></span><br><span class="line">      resolve(devWebpackConfig)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在 module.exports 使用了 devWebpackConfig。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">const devWebpackConfig = webpackMerge(commonConfig[0], &#123;</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: utils.styleLoaders(&#123; sourceMap: config.dev.cssSourceMap, usePostCSS: true &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  devtool: config.dev.devtool,</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.DefinePlugin(&#123;</span><br><span class="line">      &apos;process.env&apos;: &#123;</span><br><span class="line">        &apos;NODE_ENV&apos;: config.dev.env</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    </span><br><span class="line">    ...generateHtmlWebpackPlugin(commonConfig[0].entry),</span><br><span class="line">    </span><br><span class="line">    new ScriptExtHtmlWebpackPlugin(&#123;</span><br><span class="line">      defaultAttribute: &apos;defer&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  ],</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    clientLogLevel: &apos;warning&apos;,</span><br><span class="line">    compress: true,</span><br><span class="line">    contentBase: config.dev.contentBase,</span><br><span class="line">    host: config.dev.host,</span><br><span class="line">    port: config.dev.port,</span><br><span class="line">    historyApiFallback: config.dev.historyApiFallback,</span><br><span class="line">    public: config.dev.public,</span><br><span class="line">    open:config.dev.open,</span><br><span class="line">    watchContentBase: config.dev.watchContentBase,</span><br><span class="line">    overlay: config.dev.errorOverlay</span><br><span class="line">    ? &#123; warnings: false, errors: true &#125;</span><br><span class="line">    : false,</span><br><span class="line">    proxy: config.dev.proxyTable,</span><br><span class="line">    quiet: true, // necessary for FriendlyErrorsPlugin</span><br><span class="line">    openPage: encodeURI(openPage),</span><br><span class="line">    watchOptions: config.dev.watchOptions</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">const weexConfig = webpackMerge(commonConfig[1], &#123;</span><br><span class="line">  watch: true</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>其中 plugins 调用了 generateHtmlWebpackPlugin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const generateHtmlWebpackPlugin = (entry) =&gt; &#123;</span><br><span class="line">  let entrys = Object.keys(entry);</span><br><span class="line">  // exclude vendor entry.</span><br><span class="line">  entrys = entrys.filter(entry =&gt; entry !== &apos;vendor&apos; );</span><br><span class="line">  const htmlPlugin = entrys.map(name =&gt; &#123;</span><br><span class="line">    return new HtmlWebpackPlugin(&#123;</span><br><span class="line">      multihtmlCache: true,</span><br><span class="line">      filename: name + &apos;.html&apos;,</span><br><span class="line">      template: helper.rootNode(`web/index.html`),</span><br><span class="line">      isDevServer: true,</span><br><span class="line">      chunksSortMode: &apos;dependency&apos;,</span><br><span class="line">      inject: true,</span><br><span class="line">      devScripts: config.dev.htmlOptions.devScripts,</span><br><span class="line">      chunks: [&apos;vendor&apos;, name]</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  return htmlPlugin;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从方法中可以看出，这个是返回一个 html 插件，模板为 web/index.html。 很显然这里就是生成 html 的地方。那参数 commonConfig[0].entry 就是提供的全部入口文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const commonConfig = require(&apos;./webpack.common.conf&apos;);</span><br></pre></td></tr></table></figure>
+<p>在 webpack.dev.conf 第一行，可以看出数据的提供方为 webpack.common.conf</p>
+<h3 id="修改-webpack-common-conf-支持浏览器运行"><a href="#修改-webpack-common-conf-支持浏览器运行" class="headerlink" title="修改 webpack.common.conf 支持浏览器运行"></a>修改 webpack.common.conf 支持浏览器运行</h3><p>查看 module.exports</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = [webConfig, weexConfig];</span><br></pre></td></tr></table></figure>
+<p>从 module.exports 可以看出，数据由 webConfig 提供，查看 webConfig 的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const webConfig = &#123;</span><br><span class="line">  entry: Object.assign(webEntry, &#123;</span><br><span class="line">    &apos;vendor&apos;: [path.resolve(&apos;node_modules/phantom-limb/index.js&apos;)]</span><br><span class="line">  &#125;),</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: helper.rootNode(&apos;./dist&apos;),</span><br><span class="line">    filename: &apos;[name].web.js&apos;</span><br><span class="line">  &#125;,</span><br><span class="line">  …………</span><br></pre></td></tr></table></figure>
+<p>这里只是指明了编译的 web.js 文件的位置，dist 目录下，那 webEntry 如何获取的呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const getEntryFile = () =&gt; &#123;</span><br><span class="line">  const entryFile = path.join(vueWebTemp, config.entryFilePath)</span><br><span class="line">  const routerFile = path.join(vueWebTemp, config.routerFilePath)</span><br><span class="line">  fs.outputFileSync(entryFile, getEntryFileContent(helper.root(config.entryFilePath), routerFile));</span><br><span class="line">  fs.outputFileSync(routerFile, getRouterFileContent(helper.root(config.routerFilePath)));</span><br><span class="line"> </span><br><span class="line">  return &#123;</span><br><span class="line">    index: entryFile</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const webEntry = getEntryFile();</span><br></pre></td></tr></table></figure>
+<p>从源码中可以看出，getEntryFile 是用来获取所有的入口问题，那我们来修改一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const getEntryFile = () =&gt; &#123;</span><br><span class="line">  const entryFile = path.join(vueWebTemp, config.entryFilePath)</span><br><span class="line">  const routerFile = path.join(vueWebTemp, config.routerFilePath)</span><br><span class="line">  fs.outputFileSync(entryFile, getEntryFileContent(helper.root(config.entryFilePath), routerFile));</span><br><span class="line">  fs.outputFileSync(routerFile, getRouterFileContent(helper.root(config.routerFilePath)));</span><br><span class="line"></span><br><span class="line">&gt;   const detailFilePath = &apos;detail.js&apos;</span><br><span class="line">&gt;   const detailFile = path.join(vueWebTemp, modifyFilePath)</span><br><span class="line">&gt;   fs.outputFileSync(detailFile, getEntryFileContent(helper.root(detailFilePath), detailFile));</span><br><span class="line"> </span><br><span class="line">  return &#123;</span><br><span class="line">    index: entryFile,</span><br><span class="line">    detail: detailFile,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新增 detail 的配置。</p>
+<p>重新运行 npm start ，可以看到浏览器中有了2个页面的标签</p>
+<p><img src="media/15378481399364/15378652688141.jpg" alt="-w331"></p>
+<h3 id="修改-webpack-common-conf-支持生成多个-jsbundle"><a href="#修改-webpack-common-conf-支持生成多个-jsbundle" class="headerlink" title="修改 webpack.common.conf 支持生成多个 jsbundle"></a>修改 webpack.common.conf 支持生成多个 jsbundle</h3><p>和浏览器显示 html 的原理一下，端上需要显示 js 文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const weexConfig = &#123;</span><br><span class="line">  entry: weexEntry,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.join(__dirname, &apos;../dist&apos;),</span><br><span class="line">    filename: &apos;[name].js&apos;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>可以看到 js 源文件的提供方为 weexConfig， 查看源码，比起浏览器要简单很多，只需要简单修改配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const weexEntry = &#123;</span><br><span class="line">  &apos;index&apos;: helper.root(&apos;entry.js&apos;),</span><br><span class="line">&gt;   &apos;detail&apos;: helper.root(&apos;detail.js&apos;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第三步：添加-navigator-跳转"><a href="#第三步：添加-navigator-跳转" class="headerlink" title="第三步：添加 navigator 跳转"></a>第三步：添加 navigator 跳转</h2><p>在需要跳转的地方添加此方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let bundleUrl = weex.config.bundleUrl</span><br><span class="line">let nativeBase</span><br><span class="line">let host = &apos;localhost:8080&apos;</span><br><span class="line">let matches = /\/\/([^/]+?)\//.exec(bundleUrl)</span><br><span class="line">if (matches &amp;&amp; matches.length &gt;= 2) &#123;</span><br><span class="line">  host = matches[1]</span><br><span class="line">&#125;</span><br><span class="line">if (weex.config.env.platform === &apos;iOS&apos;) &#123;</span><br><span class="line">  nativeBase = &apos;http://&apos; + host + &apos;/dist/modify.js&apos;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  nativeBase = &apos;http://&apos; + host + &apos;/modify.html&apos;</span><br><span class="line">&#125;       </span><br><span class="line">navigator.push(&#123;</span><br><span class="line">  url: nativeBase,</span><br><span class="line">  animated: &quot;true&quot;</span><br><span class="line">&#125;, null)</span><br></pre></td></tr></table></figure>
+<p>weex 提供了一些环境变量，通过 platform 可以获取到设备类型，除此之外，还有很多其他字段：<br><a href="http://weex.apache.org/cn/references/weex-variable.html" target="_blank" rel="noopener">http://weex.apache.org/cn/references/weex-variable.html</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>搜索和很多资料，终于解决了问题，不过使用 weexplayground 扫描跳转还有问题，目前正在解决。解决后，再补充。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.jianshu.com/p/ae1d7a2b0a8a" target="_blank" rel="noopener">https://www.jianshu.com/p/ae1d7a2b0a8a</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://www.jianshu.com/p/a0c4c8f3ad2d" target="_blank" rel="noopener">https://www.jianshu.com/p/a0c4c8f3ad2d</a><br><a href="https://juejin.im/entry/5a0938586fb9a0451a75e010" target="_blank" rel="noopener">https://juejin.im/entry/5a0938586fb9a0451a75e010</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/amber/" rel="tag"># amber</a>
+          
+            <a href="/tags/weex/" rel="tag"># weex</a>
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/Hexo-上传 GitHub/" rel="next" title="Hexo 上传 github">
+                <i class="fa fa-chevron-left"></i> Hexo 上传 github
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Weex-创建多页面工程"><span class="nav-number">1.</span> <span class="nav-text">Weex 创建多页面工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步：提供二个页面入口"><span class="nav-number">1.1.</span> <span class="nav-text">第一步：提供二个页面入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步：修改-webpack"><span class="nav-number">1.2.</span> <span class="nav-text">第二步：修改 webpack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-npm-start-查看浏览器运行效果"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用 npm start 查看浏览器运行效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-webpack-common-conf-支持浏览器运行"><span class="nav-number">1.2.2.</span> <span class="nav-text">修改 webpack.common.conf 支持浏览器运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-webpack-common-conf-支持生成多个-jsbundle"><span class="nav-number">1.2.3.</span> <span class="nav-text">修改 webpack.common.conf 支持生成多个 jsbundle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三步：添加-navigator-跳转"><span class="nav-number">1.3.</span> <span class="nav-text">第三步：添加 navigator 跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.5.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

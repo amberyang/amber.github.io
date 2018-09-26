@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="amber,blog,animation,uiview," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="首要任务针对 Core Animation 进行探讨 虽然很多东西也可以用更高层级的 UIKit 的方法来完成，但是 Core Animation 将会让你更好的理解正在发生什么。它以一种更明确地方式来描述动画。 再看动画如何与我们在屏幕上看到的内容交互之前，我们需要快速浏览一下 Core Animation 的 CALayer，这是动画产生作用的地方。 UIView 实例以及 layer-bac">
+<meta name="keywords" content="amber,blog,animation,uiview">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Define 宏">
+<meta property="og:url" content="http://github.com/AmberBlog/blog.git/2018/01/18/UIView动画/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="首要任务针对 Core Animation 进行探讨 虽然很多东西也可以用更高层级的 UIKit 的方法来完成，但是 Core Animation 将会让你更好的理解正在发生什么。它以一种更明确地方式来描述动画。 再看动画如何与我们在屏幕上看到的内容交互之前，我们需要快速浏览一下 Core Animation 的 CALayer，这是动画产生作用的地方。 UIView 实例以及 layer-bac">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-18T06:40:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Define 宏">
+<meta name="twitter:description" content="首要任务针对 Core Animation 进行探讨 虽然很多东西也可以用更高层级的 UIKit 的方法来完成，但是 Core Animation 将会让你更好的理解正在发生什么。它以一种更明确地方式来描述动画。 再看动画如何与我们在屏幕上看到的内容交互之前，我们需要快速浏览一下 Core Animation 的 CALayer，这是动画产生作用的地方。 UIView 实例以及 layer-bac">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://github.com/AmberBlog/blog.git/2018/01/18/UIView动画/"/>
+
+
+
+
+
+  <title>Define 宏 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://github.com/AmberBlog/blog.git/2018/01/18/UIView动画/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Define 宏</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T16:21:20+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="首要任务"><a href="#首要任务" class="headerlink" title="首要任务"></a>首要任务</h1><p>针对 Core Animation 进行探讨</p>
+<p>虽然很多东西也可以用更高层级的 UIKit 的方法来完成，但是 Core Animation 将会让你更好的理解正在发生什么。它以一种更明确地方式来描述动画。</p>
+<p>再看动画如何与我们在屏幕上看到的内容交互之前，我们需要快速浏览一下 Core Animation 的 CALayer，这是动画产生作用的地方。</p>
+<p>UIView 实例以及 layer-backed 的 NSView，修改他们的 layer 来委托强大的 Core Graphics 框架来进行渲染。然而，你务必要理解，当把动画添加到一个 layer 时，是不直接修改它的属性的。</p>
+<p>取而代之，Core Animation 维护了两个平行 layer 层次结构：model layer tree （模型层树）和 presentation layer tree (表示层树)。前者中的 layers 反映了我们能直接看到的 layers 的状态，而后者的 layers 则是动画正在表现的值的近似。</p>
+<p>实际上还有所谓的第三个 layer 树，叫做 rendering tree（渲染书）。因为它对 Core Animation 而言是私有的，所以暂时不讨论。</p>
+<p>考虑在 view 上增加一个渐出动画。如果在动画中的任意时刻，查看 layer 的 opacity 值，你是得不到与屏幕内容对应的透明度的。取而代之，你需要查看 presentation layer 以获得正确的结果。</p>
+<p>虽然你可能不会去直接设置 presentation layer 的属性，但是使用它的当前值来创建新的动画，或者在动画发生时与 layers 交互是非常有用的。</p>
+<p>通过使用 - [CALayer presentationLayer] 和 - [CALayer modelLayer]，你可以在两个 layer 之间轻松切换。</p>
+<h1 id="基本动画"><a href="#基本动画" class="headerlink" title="基本动画"></a>基本动画</h1><p>使用 CABasicAnimation 实现 线性动画</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @&quot;position.x&quot;;</span><br><span class="line">animation.fromValue = @77;</span><br><span class="line">animation.toValue = @455;</span><br><span class="line">animation.duration = 1;</span><br><span class="line"> </span><br><span class="line">[rocket.layer addAnimation:animation forKey:@&quot;basic&quot;];</span><br></pre></td></tr></table></figure>
+<p>注意我们的动画的键路径，也就是 position.x，实际上包含一个存储在 position 属性中的 CGPoint 结构体成员。这是 Core Animation 一个非常方便的特性。</p>
+<p><strong>完整列表<br><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Key-ValueCodingExtensions/Key-ValueCodingExtensions.html" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Key-ValueCodingExtensions/Key-ValueCodingExtensions.html</a></strong></p>
+<p>然而，当我们运行该代码时，我们意识到完成动画后对象马上回到了初始位置。这是因为在默认情况下，动画不会在超出其持续时间后还修改 presentation layer。实际上，在结束时它甚至会被彻底移除。</p>
+<p>一但动画被移除，presentation layer 将回到 model layer 的值，并且因为我们从未修改该 layer 的 postion 属性，所以对象将重新出现在它开始的地方。</p>
+<p>这里有两种解决这个问题的方法：</p>
+<ol>
+<li>直接在 model layer 上更新属性。这个是推荐的做法，因为它是的动画完全可选。<br>一旦动画完成并且从 layer 中移除，presentation layer 将回到 model layer 设置的值，而这个值抢号与动画最后一个步骤相匹配。</li>
+</ol>
+<p>恰好与动画最后一个步骤相匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @&quot;position.x&quot;;</span><br><span class="line">animation.fromValue = @77;</span><br><span class="line">animation.toValue = @455;</span><br><span class="line">animation.duration = 1;</span><br><span class="line"> </span><br><span class="line">[rocket.layer addAnimation:animation forKey:@&quot;basic&quot;];</span><br><span class="line"> </span><br><span class="line">rocket.layer.position = CGPointMake(455, 61);</span><br></pre></td></tr></table></figure>
+<p>或者，你可以通过设置动画的 fillModel 属性为 kCAFillModeForward 以留在最终状态，并设置 removedOnCompletion 为 NO 以防止它被自动移除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @&quot;position.x&quot;;</span><br><span class="line">animation.fromValue = @77;</span><br><span class="line">animation.toValue = @455;</span><br><span class="line">animation.duration = 1;</span><br><span class="line"> </span><br><span class="line">animation.fillMode = kCAFillModeForward;</span><br><span class="line">animation.removedOnCompletion = NO;</span><br><span class="line"> </span><br><span class="line">[rectangle.layer addAnimation:animation forKey:@&quot;basic&quot;];</span><br></pre></td></tr></table></figure>
+<p>如果将已完成的动画保持在 layer 上时，会造成额外的开销，因为渲染器回去进行额外的绘画工作。</p>
+<p>值得提出的是，实际我们创建的动画对象被添加到 layer 时立刻就复制了一份。这个特性在多个 view 中重用动画时这非常有用。比如想要第二个对象在第一个动画不久后也开始动画：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @&quot;position.x&quot;;</span><br><span class="line">animation.byValue = @378;</span><br><span class="line">animation.duration = 1;</span><br><span class="line"> </span><br><span class="line">[rocket1.layer addAnimation:animation forKey:@&quot;basic&quot;];</span><br><span class="line">rocket1.layer.position = CGPointMake(455, 61);</span><br><span class="line"> </span><br><span class="line">animation.beginTime = CACurrentMediaTime() + 0.5;</span><br><span class="line"> </span><br><span class="line">[rocket2.layer addAnimation:animation forKey:@&quot;basic&quot;];</span><br><span class="line">rocket2.layer.position = CGPointMake(455, 111);</span><br></pre></td></tr></table></figure>
+<p>设置动画的 beginTime 为未来 0.5秒将智慧影响 rocket2，因为动画在执行语句 [rocket1.layer addAnimation:animation forKey:@”basic”]; 时已经被赋值了，并且之后 rocket1 也不会考虑对动画对象的改变。</p>
+<p>我决定再使用 CABasicAnimation 的 byValue 属性创建一个动画，这个动画从 presentation layer 的当前值开始，加上 byValue的值后结束。这使得动画更易于重用，因为你不需要精确的指定可能无法提前知道的 from- 和 toValue 的值。</p>
+<p>fromValue, byValue 和 toValue 的不同组合可以用来实现不同的效果</p>
+<p>文档：<br><strong><a href="https://developer.apple.com/reference/quartzcore/cabasicanimation#//apple_ref/doc/uid/TP40004496-CH1-SW4" target="_blank" rel="noopener">https://developer.apple.com/reference/quartzcore/cabasicanimation#//apple_ref/doc/uid/TP40004496-CH1-SW4</a></strong></p>
+<h1 id="多步动画"><a href="#多步动画" class="headerlink" title="多步动画"></a>多步动画</h1><p>如果想要为你的动画定义超过两个步骤，可以使用更通用的 CAKeyframeAnimation，而不是链接多个 CABasicAnimation 实例。</p>
+<p>关键帧(keyframe) 使我们能够定义动画中任意的一个点，然后让 Core Animation 填充所谓的中间帧。</p>
+<p>比如晃动的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];</span><br><span class="line">animation.keyPath = @&quot;position.x&quot;;</span><br><span class="line">animation.values = @[ @0, @10, @-10, @10, @0 ];</span><br><span class="line">animation.keyTimes = @[ @0, @(1 / 6.0), @(3 / 6.0), @(5 / 6.0), @1 ];</span><br><span class="line">animation.duration = 0.4;</span><br><span class="line"> </span><br><span class="line">animation.additive = YES;</span><br><span class="line"> </span><br><span class="line">[form.layer addAnimation:animation forKey:@&quot;shake&quot;];</span><br></pre></td></tr></table></figure>
+<p>values 数组定义了表单应该到哪些位置。</p>
+<p>设置 keyTimes 属性让我们能够制定关键帧动画发生的时间。他们被指定为关键帧动画总只需时间的一个分数。</p>
+<p>请注意我</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://ios.jobbole.com/69111/" target="_blank" rel="noopener">http://ios.jobbole.com/69111/</a></p>
+<p><a href="http://wiki.jikexueyuan.com/project/ios-core-animation/" target="_blank" rel="noopener">http://wiki.jikexueyuan.com/project/ios-core-animation/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/amber/" rel="tag"># amber</a>
+          
+            <a href="/tags/blog/" rel="tag"># blog</a>
+          
+            <a href="/tags/animation/" rel="tag"># animation</a>
+          
+            <a href="/tags/uiview/" rel="tag"># uiview</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/Hexo-端口被占的解决方案/" rel="next" title="Hexo 端口被占的解决方案">
+                <i class="fa fa-chevron-left"></i> Hexo 端口被占的解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/18/Hexo-上传 GitHub/" rel="prev" title="Hexo 上传 github">
+                Hexo 上传 github <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#首要任务"><span class="nav-number">1.</span> <span class="nav-text">首要任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本动画"><span class="nav-number">2.</span> <span class="nav-text">基本动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多步动画"><span class="nav-number">3.</span> <span class="nav-text">多步动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
