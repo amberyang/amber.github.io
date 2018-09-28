@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta name="description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 的配置类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进">
 <meta name="keywords" content="amber,weex,webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Weex 创建多页面工程">
 <meta property="og:url" content="https://amberyang.github.io.git/2018/09/26/Weex-创建多页面工程/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta property="og:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 的配置类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://amberyang.github.io.git/2018/09/26/Weex-创建多页面工程/15378481399364/15378652688141.jpg">
-<meta property="og:updated_time" content="2018-09-28T03:21:02.573Z">
+<meta property="og:updated_time" content="2018-09-28T07:51:35.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Weex 创建多页面工程">
-<meta name="twitter:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进行">
+<meta name="twitter:description" content="Weex 创建多页面工程初学 Weex ，遇到很多问题，其中就有多页面的问题。 最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。 大概看了一点资料，vue-router 的配置类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。 在显示的地方调用  进行显示，通过 router-link 进">
 <meta name="twitter:image" content="https://amberyang.github.io.git/2018/09/26/Weex-创建多页面工程/15378481399364/15378652688141.jpg">
 
 
@@ -304,8 +304,9 @@
       
         <h1 id="Weex-创建多页面工程"><a href="#Weex-创建多页面工程" class="headerlink" title="Weex 创建多页面工程"></a>Weex 创建多页面工程</h1><p>初学 Weex ，遇到很多问题，其中就有多页面的问题。</p>
 <p>最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。</p>
-<p>大概看了一点资料，vue-router 有些类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。</p>
+<p>大概看了一点资料，vue-router 的配置类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。</p>
 <p>在显示的地方调用 <router-view> 进行显示，通过 router-link 进行页面的切换。</router-view></p>
+<p>在浏览器中，route-link 会被渲染出 a 标签，在移动端则是 pushViewController。</p>
 <p>但是这个不是我想要的效果，我更多的想要的是两个独立的页面之间进行切换。</p>
 <h2 id="创建二个页面入口文件"><a href="#创建二个页面入口文件" class="headerlink" title="创建二个页面入口文件"></a>创建二个页面入口文件</h2><p>weex create 创建一个新工程 pagesdemo，默认创建的都是单页面工程，在工程的 src 目录下包含 index.vue 和 entry.js。</p>
 <p>创建一个新的入口，同样需要提供这两个文件。在同级目录下新增一个 detail.vue 和 detail.js。</p>
