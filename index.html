@@ -306,8 +306,8 @@
 <p>在显示的地方调用 <router-view> 进行显示，通过 router-link 进行页面的切换。</router-view></p>
 <p>但是这个不是我想要的效果，我更多的想要的是两个独立的页面之间进行切换。</p>
 <h2 id="创建二个页面入口文件"><a href="#创建二个页面入口文件" class="headerlink" title="创建二个页面入口文件"></a>创建二个页面入口文件</h2><p>weex create 创建一个新工程 pagesdemo，默认创建的都是单页面工程，在工程的 src 目录下包含 index.vue 和 entry.js。</p>
-<p>创建一个新的入口，同样需要提供这两个问题。在同级目录下新增一个 detail.vue 和 detail.js。</p>
-<p>detail.js 需要修改为：</p>
+<p>创建一个新的入口，同样需要提供这两个文件。在同级目录下新增一个 detail.vue 和 detail.js。</p>
+<p>detail.js 修改为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const router = require(&apos;./router&apos;)</span><br><span class="line">const detail = require(&apos;@/detail.vue&apos;)</span><br><span class="line"></span><br><span class="line">new Vue(Vue.util.extend(&#123;el: &apos;#root&apos;, router&#125;, detail))</span><br></pre></td></tr></table></figure>
 <h2 id="修改-webpack"><a href="#修改-webpack" class="headerlink" title="修改 webpack"></a>修改 webpack</h2><p>新增文件后，npm start 并不会编译新增的文件。如果想要文件被编译，还需要修改 webpack 文件。</p>
 <p>工程目录下的 webpack.config.js 内容如下：</p>
@@ -637,7 +637,7 @@
 <h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p> #define A(x) T_##x     =&gt; T_1</p>
 <p> #define B(x) #@x       =&gt; ‘1’</p>
 <p> #define C(x) #x        =&gt; “1”</p>
-<h1 id="多行定义"><a href="#多行定义" class="headerlink" title="多行定义"></a>多行定义</h1><h1 id="定义宏，取消宏"><a href="#定义宏，取消宏" class="headerlink" title="定义宏，取消宏"></a>定义宏，取消宏</h1><p>//定义宏 #define [MacroName] [MacroValue]<br>//取消宏 #undef [MacroName]<br>//普通宏 #define PI (3.1415926)<br>//带参数的宏 #define max(a,b) ((a)&gt;(b)? (a),(b)) </p>
+<h1 id="定义宏，取消宏"><a href="#定义宏，取消宏" class="headerlink" title="定义宏，取消宏"></a>定义宏，取消宏</h1><p>//定义宏 #define [MacroName] [MacroValue]<br>//取消宏 #undef [MacroName]<br>//普通宏 #define PI (3.1415926)<br>//带参数的宏 #define max(a,b) ((a)&gt;(b)? (a),(b)) </p>
 <p>通过条件编译开关来避免重复包含(重复定义)<br>例如 #ifndef <strong>headerfileXXX</strong> #define <strong>headerfileXXX</strong> … //文件内容 … #endif</p>
 <p>1、防止一个头文件被重复包含</p>
 <pre><code>#ifndef COMDEF_H
@@ -704,14 +704,17 @@
 <li>define中的特殊标识符<br>#define Conn(x,y) x##y<br>#define ToChar(x) #@x<br>#define ToString(x) #x<br>int a=Conn(12,34); char b=ToChar(a); char c[]=ToString(a); 结果是 a=1234,c=’a’,c=’1234’;<br>可以看出 ## 是简单的连接符,#@用来给参数加单引号,#用来给参数加双引号即转成字符串</li>
 </ol>
 <h1 id="define-和-inline-的区别"><a href="#define-和-inline-的区别" class="headerlink" title="define 和 inline 的区别"></a>define 和 inline 的区别</h1><p>define：定义预编译时的处理宏<br>只进行简单的字符替换，无类型检测</p>
-<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><p>一、产生背景<br>引出原因：函数内部定义的变量，在程序执行到它的定义处时，编译器为它在栈上分配空间，大家知道，函数在栈上分配的空间在此函数执行结束时会释放掉，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？<br>最容易想到的方法是定义一个全局的变量，但定义为一个全局变量有许多缺点，最明显的缺点是破坏了此变量的访问范围（使得在此函数中定义的变量，不仅仅受此函数控制）。类的静态成员也是这个道理。<br>解决方案：因此C++ 中引入了static，用它来修饰变量，它能够指示编译<br>器将此变量在程序的静态存储区分配空间保存，这样即实现了目的，又使得此变量的存取范围不变。<br>二、具体作用<br>Static作用分析总结：static总是使得变量或对象的存储形式变成静态存储，连接方式变成内部连接，对于局部变量（已经是内部连接了），它仅改变其存储方式；对于全局变量（已经是静态存储了），它仅改变其连接类型。(1 连接方式：成为内部连接；2 存储形式：存放在静态全局存储区)</p>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>一、产生背景<br>C++有一个类型严格的编译系统，这使得C++程序的错误在编译阶段即可发现许多，从而使得出错率大为减少，因此，也成为了C++与C相比，有着突出优点的一个方面。<br>C中很常见的预处理指令 #define VariableName VariableValue 可以很方便地进行值替代，这种值替代至少在三个方面优点突出：<br>一是避免了意义模糊的数字出现，使得程序语义流畅清晰，如下例：<br>　　#define USER_NUM_MAX 107 这样就避免了直接使用107带来的困惑。<br>二是可以很方便地进行参数的调整与修改，如上例，当人数由107变为201时，改动此处即可；<br>三是提高了程序的执行效率，由于使用了预编译器进行值替代，并不需要为这些常量分配存储空间，所以执行的效率较高。</p>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p>引出原因：函数内部定义的变量，在程序执行到它的定义处时，编译器为它在栈上分配空间，大家知道，函数在栈上分配的空间在此函数执行结束时会释放掉，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？<br>最容易想到的方法是定义一个全局的变量，但定义为一个全局变量有许多缺点，最明显的缺点是破坏了此变量的访问范围（使得在此函数中定义的变量，不仅仅受此函数控制）。类的静态成员也是这个道理。<br>解决方案：因此C++ 中引入了static，用它来修饰变量，它能够指示编译<br>器将此变量在程序的静态存储区分配空间保存，这样即实现了目的，又使得此变量的存取范围不变。</p>
+<h3 id="具体作用"><a href="#具体作用" class="headerlink" title="具体作用"></a>具体作用</h3><p>Static作用分析总结：static总是使得变量或对象的存储形式变成静态存储，连接方式变成内部连接，对于局部变量（已经是内部连接了），它仅改变其存储方式；对于全局变量（已经是静态存储了），它仅改变其连接类型。(1 连接方式：成为内部连接；2 存储形式：存放在静态全局存储区)</p>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><h3 id="产生背景-1"><a href="#产生背景-1" class="headerlink" title="产生背景"></a>产生背景</h3><p>C++有一个类型严格的编译系统，这使得C++程序的错误在编译阶段即可发现许多，从而使得出错率大为减少，因此，也成为了C++与C相比，有着突出优点的一个方面。<br>C中很常见的预处理指令 #define VariableName VariableValue 可以很方便地进行值替代，这种值替代至少在三个方面优点突出：<br>一是避免了意义模糊的数字出现，使得程序语义流畅清晰，如下例：<br>　　#define USER_NUM_MAX 107 这样就避免了直接使用107带来的困惑。<br>二是可以很方便地进行参数的调整与修改，如上例，当人数由107变为201时，改动此处即可；<br>三是提高了程序的执行效率，由于使用了预编译器进行值替代，并不需要为这些常量分配存储空间，所以执行的效率较高。</p>
 <p>然而，预处理语句虽然有以上的许多优点，但它有个比较致命的缺点，即，预处理语句仅仅只是简单值替代，缺乏类型的检测机制。这样预处理语句就不能享受C++严格类型检查的好处，从而可能成为引发一系列错误的患。</p>
-<p>Const 推出的初始目的，正是为了取代预编译指令，消除它的缺点，同时继承它的优点。<br>现在它的形式变成了：<br>Const DataType VariableName = VariableValue ;<br>2) 具体作用<br>1.const 用于指针的两种情况分析：<br>　    int const *A; 　//A可变，*A不可变<br>　    int *const A; 　//A不可变，*A可变<br>　分析：const 是一个左结合的类型修饰符，它与其左侧的类型修饰符和为一个类型修饰符，所以，int const 限定 *A,不限定A。int *const 限定A,不限定*A。<br>2.const 限定函数的传递值参数：<br>　    void Fun(const int Var);<br>　    分析：上述写法限定参数在函数体中不可被改变。<br>3.const 限定函数的值型返回值：<br>const int Fun1();<br>const MyClass Fun2();<br>　    分析:上述写法限定函数的返回值不可被更新，当函数返回内部的类型时（如Fun1），已经是一个数值，当然不可被赋值更新，所以，此时const无意义，最好去掉，以免困惑。当函数返回自定义的类型时（如Fun2），这个类型仍然包含可以被赋值的变量成员，所以，此时有意义。</p>
+<p>Const 推出的初始目的，正是为了取代预编译指令，消除它的缺点，同时继承它的优点。<br>现在它的形式变成了：<br>Const DataType VariableName = VariableValue ;</p>
+<h3 id="具体作用-1"><a href="#具体作用-1" class="headerlink" title="具体作用"></a>具体作用</h3><p>1.const 用于指针的两种情况分析：<br>　    int const *A; 　//A可变，*A不可变<br>　    int *const A; 　//A不可变，*A可变<br>　分析：const 是一个左结合的类型修饰符，它与其左侧的类型修饰符和为一个类型修饰符，所以，int const 限定 *A,不限定A。int *const 限定A,不限定*A。<br>2.const 限定函数的传递值参数：<br>　    void Fun(const int Var);<br>　    分析：上述写法限定参数在函数体中不可被改变。<br>3.const 限定函数的值型返回值：<br>const int Fun1();<br>const MyClass Fun2();<br>　    分析:上述写法限定函数的返回值不可被更新，当函数返回内部的类型时（如Fun1），已经是一个数值，当然不可被赋值更新，所以，此时const无意义，最好去掉，以免困惑。当函数返回自定义的类型时（如Fun2），这个类型仍然包含可以被赋值的变量成员，所以，此时有意义。</p>
 <ol>
 <li>传递与返回地址： 此种情况最为常见，由地址变量的特点可知，适当使用const，意义昭然。<br>5.　const 限定类的成员函数：<br>class ClassName {<br>　public:<br>　　int Fun() const;<br>　…..<br>}<br>　　注意：采用此种const 后置的形式是一种规定，亦为了不引起混淆。在此函数的声明中和定义中均要使用const,因为const已经成为类型信息的一部分。<br>获得能力：可以操作常量对象。<br>失去能力：不能修改类的数据成员，不能在函数中调用其他不是const的函数。</li>
 </ol>
-<h2 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h2><p>1) 产生背景<br>inline这个关键字的引入原因和const十分相似，inline 关键字用来定义一个类的内联函数，引入它的主要原因是用它替代C中<br>表达式形式的宏定义。<br>表达式形式的宏定义一例：<br>　　　#define ExpressionName(Var1,Var2) (Var1+Var2)*(Var1-Var2)<br>这种表达式形式宏形式与作用跟函数类似，但它使用预编译器，没有堆栈，使用上比函数高效。但它只是预编译器上符号表的简单替换，不能进行参数有效性检测及使用C++类的成员访问控制。<br>inline 推出的目的，也正是为了取代这种表达式形式的宏定义，它消除了它的缺点，同时又很好地继承了它的优点。inline代码放入预编译器符号表中，高效；它是个真正的函数，调用时有严格的参数检测；它也可作为类的成员函数。<br>2) 具体作用<br>直接在class类定义中定义各函数成员，系统将他们作为内联函数处理；成员函数是内联函数，意味着：每个对象都有该函数一份独立的拷贝。<br>在类外，如果使用关键字inline定义函数成员，则系统也会作为内联函数处理；</p>
+<h2 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h2><h3 id="产生背景-2"><a href="#产生背景-2" class="headerlink" title="产生背景"></a>产生背景</h3><p>inline这个关键字的引入原因和const十分相似，inline 关键字用来定义一个类的内联函数，引入它的主要原因是用它替代C中<br>表达式形式的宏定义。<br>表达式形式的宏定义一例：<br>　　　#define ExpressionName(Var1,Var2) (Var1+Var2)*(Var1-Var2)<br>这种表达式形式宏形式与作用跟函数类似，但它使用预编译器，没有堆栈，使用上比函数高效。但它只是预编译器上符号表的简单替换，不能进行参数有效性检测及使用C++类的成员访问控制。<br>inline 推出的目的，也正是为了取代这种表达式形式的宏定义，它消除了它的缺点，同时又很好地继承了它的优点。inline代码放入预编译器符号表中，高效；它是个真正的函数，调用时有严格的参数检测；它也可作为类的成员函数。</p>
+<h3 id="具体作用-2"><a href="#具体作用-2" class="headerlink" title="具体作用"></a>具体作用</h3><p>直接在class类定义中定义各函数成员，系统将他们作为内联函数处理；成员函数是内联函数，意味着：每个对象都有该函数一份独立的拷贝。<br>在类外，如果使用关键字inline定义函数成员，则系统也会作为内联函数处理；</p>
 <h2 id="C关键字"><a href="#C关键字" class="headerlink" title="C关键字"></a>C关键字</h2><pre><code>#define 宏名要替换的代码    
 </code></pre><p>宏定义，保存在预编译器的符号表中，执行高效；作为一种简单的符号替换，不进行其中参数有效性的检测<br>typedef 已有类型 新类型<br>别名, 常用于创建平台无关类型, typedef 在编译时被解释，因此让编译器来应付超越预处理器能力的文本替换</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://msdn.microsoft.com/en-us/library/teas0593.aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/library/teas0593.aspx</a></p>
