@@ -229,6 +229,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://amberyang.github.io.git/2020/03/06/App 包大小 - 图片压缩自动化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Amber">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/06/App 包大小 - 图片压缩自动化/" itemprop="url">App 包大小 - 图片压缩自动化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-06T00:00:00+08:00">
+                2020-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="App-包大小-图片压缩自动化"><a href="#App-包大小-图片压缩自动化" class="headerlink" title="App 包大小 - 图片压缩自动化"></a>App 包大小 - 图片压缩自动化</h1><p>app 包大小一直是各家公司持续优化的一个项目，比如删除无用图片，无用文件等。<br>图片资源过多，整体图片资源过大也是其中一个问题，虽然设计同学提供的资源一般是压缩后的，但是为了包大小的问题，开发同学还会进行再次压缩，这可能需要设计同学配合或者在压缩网站上进行。</p>
+<p>导入图片时很少会注意图片大小或者哪些图片被压缩了，这就需要开发同学检查图片大小或者将图片再次压缩。为了解决人工检查的成本，这里会介绍通过 git commit 压缩图片后提交的方法。</p>
+<h2 id="图片压缩"><a href="#图片压缩" class="headerlink" title="图片压缩"></a>图片压缩</h2><p>再介绍自动化前，一定是需要一个图片压缩脚本的，tinypng 网站提供了压缩接口，需要注册获取自己对应的 key<br><a href="https://tinypng.com/developers" target="_blank" rel="noopener">https://tinypng.com/developers</a></p>
+<p>压缩图片的 python 脚本，将自己的 key 替换一下文件中 ‘自己分配的 key’ 这部分</p>
+<p><a href="media/15645597762445/imagecompress.py">imagecompress</a></p>
+<p>脚本内容就不细说了，除了压缩图片，还统计了压缩了图片压缩相关的信息，感兴趣的同学可以自己看一下，根据自己的需求修改。</p>
+<h2 id="git-钩子"><a href="#git-钩子" class="headerlink" title="git 钩子"></a>git 钩子</h2><p>有了压缩脚本以后，需要思考的是如何自动化执行脚本。一般的开发者都选用的 git 进行管理，所以在 git 操作时进行压缩是最简单有效的。这里就需要用到 git 钩子自定义脚本来控制 git 的工作流程，大家最常见的就是 code review。</p>
+<ul>
+<li><p>客户端钩子包括 pre-commit, prepare-commit-msg, commit-msg, post-commit。</p>
+</li>
+<li><p>hooks 的目录位于 .git 下面</p>
+</li>
+</ul>
+<p><img src="/2020/03/06/App 包大小 - 图片压缩自动化/15645597762445/15834735142843.jpg" alt="-w197"></p>
+<p>hooks 里面的文件都是 sample 结尾，需要注意的是这些文件都是示例脚本，是不会执行的，只有重命名后才会生效，具体可以参考 <a href="https://git-scm.com/book/zh/v2/自定义-Git-Git-钩子" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2/自定义-Git-Git-钩子</a></p>
+<h2 id="自动化压缩"><a href="#自动化压缩" class="headerlink" title="自动化压缩"></a>自动化压缩</h2><p>结合钩子和图片压缩脚本，接下来介绍一下如何修改脚本实现自动化压缩</p>
+<h3 id="pre-commit"><a href="#pre-commit" class="headerlink" title="pre-commit"></a>pre-commit</h3><p>pre-commit 是在 git add 提交之后，git commit 时执行的，如果脚本执行正确则继续提交，否则驳回提交，所以在这里进行图片压缩是比较合适的时机。</p>
+<h3 id="修改-pre-commit"><a href="#修改-pre-commit" class="headerlink" title="修改 pre-commit"></a>修改 pre-commit</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">filepath=$(cd &quot;$(dirname &quot;$0&quot;)&quot;; pwd)  # 获取文件路径</span><br><span class="line"></span><br><span class="line">branch=$(git symbolic-ref --short HEAD)  # 获取分支名称</span><br><span class="line"></span><br><span class="line"># 获取到提交到暂存区的ACMR状态的文件，对 png 文件执行图片压缩脚本后提交图片</span><br><span class="line">git diff --cached --name-only --diff-filter=ACMR -z $against | while read -d $&apos;\0&apos; f; do</span><br><span class="line">if [[ $f == *&quot;.png&quot; ]];then</span><br><span class="line">	path=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot;;cd ..;cd ..; pwd)/$f&quot;</span><br><span class="line">	python &quot;$filepath/imagecompress.py&quot; $path $branch</span><br><span class="line">	exec git add $f</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>文件另存为 pre-commit，注意不要有 sample 后缀</p>
+<h3 id="执行权限"><a href="#执行权限" class="headerlink" title="执行权限"></a>执行权限</h3><p>有时候也会遇到脚本文件没有执行权限的情况，这时hooks就无法生效，需要用到 chomd 指令给脚本文件加上执行权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x pre-commit</span><br></pre></td></tr></table></figure>
+<h2 id="源文件"><a href="#源文件" class="headerlink" title="源文件"></a>源文件</h2><p><a href="App 包大小 - 图片压缩自动化/15645597762445/imagecompress.py">imagecompress</a></p>
+<p><a href="App 包大小 - 图片压缩自动化/15645597762445/pre-commit">pre-commit</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>图片压缩网站：<a href="https://tinypng.com" target="_blank" rel="noopener">https://tinypng.com</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://amberyang.github.io.git/2018/09/26/Weex-创建多页面工程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -304,8 +447,10 @@
 <p>最开始看的 vue-router，很多资料建议使用 vue-router 进行页面切换。</p>
 <p>大概看了一点资料，vue-router 的配置类似移动端的 tabController, 需要显示的页面作为 component，在 router.js 中进行注册。</p>
 <p>在显示的地方调用 <router-view> 进行显示，通过 router-link 进行页面的切换。</router-view></p>
-<p>在浏览器中，route-link 会被渲染出 a 标签，在移动端则是 pushViewController。</p>
-<p>但是这个不是我想要的效果，我更多的想要的是两个独立的页面之间进行切换。</p>
+<h2 id="Webpack-多入口文件配置和-vue-router-的区别"><a href="#Webpack-多入口文件配置和-vue-router-的区别" class="headerlink" title="Webpack 多入口文件配置和 vue-router 的区别"></a>Webpack 多入口文件配置和 vue-router 的区别</h2><ol>
+<li>bundle 文件的数量不同。 bundle 文件的打包和 entry.js 文件的配置数量有关，默认情况下之后一个 entry 文件，所以只有一个bundle文件，而通过 Webpack 配置的多个入口文件后，会被编译成多个bundle 文件</li>
+<li>在浏览器中，route-link 会被渲染出 a 标签，在移动端则是 pushViewController，这样会导致浏览器和移动端看到的效果不同</li>
+</ol>
 <h2 id="创建二个页面入口文件"><a href="#创建二个页面入口文件" class="headerlink" title="创建二个页面入口文件"></a>创建二个页面入口文件</h2><p>weex create 创建一个新工程 pagesdemo，默认创建的都是单页面工程，在工程的 src 目录下包含 index.vue 和 entry.js。</p>
 <p>创建一个新的入口，同样需要提供这两个文件。在同级目录下新增一个 detail.vue 和 detail.js。</p>
 <p>detail.js 修改为：</p>
@@ -346,7 +491,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let bundleUrl = weex.config.bundleUrl</span><br><span class="line">let nativeBase</span><br><span class="line">let host = &apos;localhost:8080&apos;</span><br><span class="line">let matches = /\/\/([^/]+?)\//.exec(bundleUrl)</span><br><span class="line">if (matches &amp;&amp; matches.length &gt;= 2) &#123;</span><br><span class="line">  host = matches[1]</span><br><span class="line">&#125;</span><br><span class="line">if (weex.config.env.platform === &apos;iOS&apos;) &#123;</span><br><span class="line">  nativeBase = &apos;http://&apos; + host + &apos;/dist/modify.js&apos;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  nativeBase = &apos;http://&apos; + host + &apos;/modify.html&apos;</span><br><span class="line">&#125;       </span><br><span class="line">navigator.push(&#123;</span><br><span class="line">  url: nativeBase,</span><br><span class="line">  animated: &quot;true&quot;</span><br><span class="line">&#125;, null)</span><br></pre></td></tr></table></figure>
 <p>weex 提供了一些环境变量，通过 platform 可以获取到设备类型，除此之外，还有很多其他字段：<br><a href="http://weex.apache.org/cn/references/weex-variable.html" target="_blank" rel="noopener">http://weex.apache.org/cn/references/weex-variable.html</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>搜索和很多资料，终于解决了问题，不过使用 weexplayground 扫描跳转还有问题，目前正在解决。解决后，再补充。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.jianshu.com/p/ae1d7a2b0a8a" target="_blank" rel="noopener">https://www.jianshu.com/p/ae1d7a2b0a8a</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://www.jianshu.com/p/a0c4c8f3ad2d" target="_blank" rel="noopener">https://www.jianshu.com/p/a0c4c8f3ad2d</a><br><a href="https://juejin.im/entry/5a0938586fb9a0451a75e010" target="_blank" rel="noopener">https://juejin.im/entry/5a0938586fb9a0451a75e010</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.jianshu.com/p/ae1d7a2b0a8a" target="_blank" rel="noopener">https://www.jianshu.com/p/ae1d7a2b0a8a</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://blog.csdn.net/u012182853/article/details/80559363" target="_blank" rel="noopener">https://blog.csdn.net/u012182853/article/details/80559363</a><br><a href="https://www.jianshu.com/p/a0c4c8f3ad2d" target="_blank" rel="noopener">https://www.jianshu.com/p/a0c4c8f3ad2d</a><br><a href="https://juejin.im/entry/5a0938586fb9a0451a75e010" target="_blank" rel="noopener">https://juejin.im/entry/5a0938586fb9a0451a75e010</a><br><a href="https://www.webpackjs.com/concepts/output/#用法-usage-" target="_blank" rel="noopener">https://www.webpackjs.com/concepts/output/#用法-usage-</a></p>
 
           
         
@@ -1068,7 +1213,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1081,7 +1226,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1118,7 +1263,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
